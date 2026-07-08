@@ -7,7 +7,7 @@ configuration:
   analytics:
     provider: plausible
   locale: en-US
-  baseUrl: https://entropy-wr.github.io/
+  baseUrl: https://entropy-wr.github.io/wr_raventhorn_public/
   ignorePatterns:
     - private
     - templates
