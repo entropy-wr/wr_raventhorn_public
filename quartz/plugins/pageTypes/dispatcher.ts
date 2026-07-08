@@ -2,7 +2,7 @@ import { QuartzEmitterPlugin, QuartzPageTypePluginInstance, TreeTransform } from
 import { QuartzComponent, QuartzComponentProps } from "../../components/types"
 import { pageResources, renderPage } from "../../components/renderPage"
 import { FullPageLayout } from "../../cfg"
-import { FilePath, FullSlug, pathToRoot } from "../../util/path"
+import { FilePath, FullSlug, basePathFromBaseUrl, pathToRoot } from "../../util/path"
 import { ProcessedContent, defaultProcessedContent } from "../vfile"
 import { write } from "../emitters/helpers"
 import { BuildCtx, trieFromAllFiles } from "../../util/ctx"
@@ -82,11 +82,10 @@ async function emitPage(
   // During local dev (--serve), the dev server strips baseDir itself and
   // serves files from root, so the 404 page must use "/" to avoid requesting
   // assets under a path prefix that the dev server doesn't serve.
+  const basePath = basePathFromBaseUrl(cfg.baseUrl)
   const baseDir =
     slug === "404"
-      ? ((ctx.argv.serve
-          ? "/"
-          : new URL(`https://${cfg.baseUrl ?? "example.com"}`).pathname) as FullSlug)
+      ? ((ctx.argv.serve ? "/" : basePath ? basePath + "/" : "/") as FullSlug)
       : pathToRoot(slug)
   const externalResources = pageResources(baseDir, resources, ctx)
   const componentData: QuartzComponentProps = {

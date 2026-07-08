@@ -36,6 +36,23 @@ export type {
 
 export const QUARTZ = "quartz"
 
+/**
+ * Extract the deployment subpath (e.g. "/wr_raventhorn_public") from a base URL.
+ *
+ * `cfg.baseUrl` may be either a full URL ("https://host/path/") or host-only
+ * ("host/path/"). Previously this was consumed as `new URL(\`https://${baseUrl}\`)`,
+ * which silently mangles a value that already includes a protocol (the host
+ * becomes part of the pathname, e.g. "//host/path"). That broke consumers like
+ * the graph view's `data-basepath`, which could no longer strip the prefix from
+ * the current page slug — so the local graph rendered with no connections when
+ * the site was deployed under a subpath.
+ */
+export function basePathFromBaseUrl(baseUrl: string | undefined | null): string {
+  if (!baseUrl) return ""
+  const withProto = /^https?:\/\//i.test(baseUrl) ? baseUrl : `https://${baseUrl}`
+  return new URL(withProto).pathname.replace(/\/$/, "")
+}
+
 // from micromorph/src/utils.ts
 // https://github.com/natemoo-re/micromorph/blob/main/src/utils.ts#L5
 const _rebaseHtmlElement = (el: Element, attr: string, newBase: string | URL) => {

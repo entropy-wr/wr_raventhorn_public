@@ -7,7 +7,13 @@ import {
   JSResourceToScriptElement,
   StaticResources,
 } from "../util/resources"
-import { FullSlug, RelativeURL, joinSegments, normalizeHastElement } from "../util/path"
+import {
+  FullSlug,
+  RelativeURL,
+  basePathFromBaseUrl,
+  joinSegments,
+  normalizeHastElement,
+} from "../util/path"
 import { clone } from "../util/clone"
 import { Root, Element, ElementContent } from "hast"
 import { GlobalConfiguration } from "../cfg"
@@ -340,9 +346,7 @@ export function renderPage(
   // During local dev (--serve), the dev server serves from root without the
   // baseUrl subpath, so basePath must be empty to avoid broken links.
   const basePath =
-    componentData.ctx.argv.serve || !cfg.baseUrl
-      ? ""
-      : new URL(`https://${cfg.baseUrl}`).pathname.replace(/\/$/, "")
+    componentData.ctx.argv.serve || !cfg.baseUrl ? "" : basePathFromBaseUrl(cfg.baseUrl)
   const doc = (
     <html lang={lang} dir={direction}>
       <Head {...componentData} />
