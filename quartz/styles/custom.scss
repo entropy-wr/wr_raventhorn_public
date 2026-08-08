@@ -4,6 +4,8 @@
 // Add site-specific styles here. This stylesheet is loaded after Quartz and
 // theme styles, so these rules can override them without editing upstream files.
 
+$linkColor: #61afef;
+
 .graph > h3 {
   margin-top: 0;
 }
@@ -33,4 +35,9 @@
   div#quartz-root.page div#quartz-body {
     max-width: calc(#{map.get($breakpoints, desktop)} + 400px) !important;
   }
+}
+
+body a.internal-link {
+  background-color: transparent !important;
+  color: $linkColor;
 }

@@ -19,6 +19,7 @@ import { trace } from "./util/trace"
 import { options } from "./util/sourcemap"
 import { Mutex } from "async-mutex"
 import { getStaticResourcesFromPlugins } from "./plugins"
+import { addExplorerOrderToContentIndex } from "./processors/emit"
 import { randomIdNonSecure } from "./util/random"
 import { ChangeEvent } from "./plugins/types"
 import { minimatch } from "minimatch"
@@ -348,6 +349,8 @@ async function rebuild(changes: ChangeEvent[], clientRefresh: () => void, buildD
         }
       }
     }
+
+    await addExplorerOrderToContentIndex(ctx, contentWithVirtual)
 
     console.log(
       `Emitted ${emittedFiles} files to \`${argv.output}\` in ${perf.timeSince("rebuild")}`,

@@ -7,6 +7,44 @@ import { trace } from "../util/trace"
 import { BuildCtx } from "../util/ctx"
 import { StaticResources } from "../util/resources"
 import { styleText } from "util"
+import fs from "fs"
+import { joinSegments } from "../util/path"
+import { getExplorerOrder } from "../util/explorerOrder"
+
+async function addExplorerOrderToContentIndex(
+  ctx: BuildCtx,
+  content: ProcessedContent[],
+): Promise<void> {
+  const indexPath = joinSegments(ctx.argv.output, "static/contentIndex.json")
+  if (!fs.existsSync(indexPath)) return
+
+  const index = JSON.parse(await fs.promises.readFile(indexPath, "utf8")) as Record<
+    string,
+    Record<string, unknown>
+  >
+  const orders = new Map<string, number>()
+
+  for (const [, file] of content) {
+    const slug = file.data.slug
+    const order = getExplorerOrder(file.data)
+    if (typeof slug === "string" && order !== undefined) {
+      orders.set(slug, order)
+    }
+  }
+
+  let changed = false
+  for (const [slug, entry] of Object.entries(index)) {
+    const order = orders.get(slug)
+    if (order !== undefined) {
+      entry.order = order
+      changed = true
+    }
+  }
+
+  if (changed) {
+    await fs.promises.writeFile(indexPath, JSON.stringify(index))
+  }
+}
 
 async function runEmitter(
   emitter: QuartzEmitterPluginInstance,
@@ -96,5 +134,9 @@ export async function emitContent(ctx: BuildCtx, content: ProcessedContent[]) {
     )
   }
 
+  await addExplorerOrderToContentIndex(ctx, contentWithVirtual)
+
   log.end(`Emitted ${emittedFiles} files to \`${argv.output}\` in ${perf.timeSince()}`)
 }
+
+export { addExplorerOrderToContentIndex }

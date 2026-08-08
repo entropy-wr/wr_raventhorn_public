@@ -39,6 +39,19 @@ Display names for folders get determined by the `title` frontmatter field in `fo
 >
 > To clear/delete the explorer state from local storage, delete the `fileTree` entry (guide on how to delete a key from local storage in chromium based browsers can be found [here](https://docs.devolutions.net/kb/general-knowledge-base/clear-browser-local-storage/clear-chrome-local-storage/)). You can disable this by passing `useSavedState: false` as an argument.
 
+### Custom file order
+
+Add a numeric `order` property to a note's frontmatter to control its position among files in the same folder:
+
+```yaml
+---
+title: Important note
+order: 100
+---
+```
+
+Higher values appear first. Notes without `order` use `0`, and notes with equal values keep the usual alphabetical order. Folders remain above files.
+
 ## Customization
 
 Most configuration can be done by passing in options to `Explorer()`.

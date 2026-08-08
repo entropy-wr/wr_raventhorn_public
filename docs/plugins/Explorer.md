@@ -27,6 +27,17 @@ This plugin accepts the following configuration options:
 - `folderDefaultState`: The default state of folders. Can be `"collapsed"` or `"open"`. Defaults to `collapsed`.
 - `useSavedState`: Whether to use local storage to save the state of the explorer. Defaults to `true`.
 
+### File order
+
+Set the numeric `order` frontmatter property on a note to control its position among files in its folder. Higher values appear first; missing values default to `0`, and equal values are sorted alphabetically.
+
+```yaml
+---
+title: Important note
+order: 100
+---
+```
+
 **TS override options** (in `quartz.ts`, for callback functions that can't be expressed in YAML):
 
 - `sortFn`: Custom sort function for ordering files and folders.

@@ -278,6 +278,7 @@ plugins:
         - modified
         - created
         - visibility
+        - order
       hidePropertiesView: false
       delimiters: ---
       language: yaml
