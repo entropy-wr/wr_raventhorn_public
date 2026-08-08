@@ -1,3 +1,36 @@
+@use "sass:map";
 @use "./variables.scss" as *;
 
-// put your custom CSS here!
+// Add site-specific styles here. This stylesheet is loaded after Quartz and
+// theme styles, so these rules can override them without editing upstream files.
+
+.graph > h3 {
+  margin-top: 0;
+}
+
+.toc:has(button.toc-header.collapsed) {
+  flex: 0 3.5rem;
+}
+
+.backlinks {
+  padding: 0;
+  display: flex;
+}
+
+.right.sidebar > .toc {
+  max-height: 40%;
+}
+
+.sidebar {
+  padding-bottom: 1rem;
+
+  h3 {
+    margin: 0;
+  }
+}
+
+@media (min-width: 1200px) {
+  div#quartz-root.page div#quartz-body {
+    max-width: calc(#{map.get($breakpoints, desktop)} + 400px) !important;
+  }
+}
