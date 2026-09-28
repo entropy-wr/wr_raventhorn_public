@@ -1,7 +1,15 @@
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
+import TimelineConstructor from "./Timeline"
 
-const Header: QuartzComponent = ({ children }: QuartzComponentProps) => {
-  return children.length > 0 ? <header>{children}</header> : null
+const Timeline = TimelineConstructor()
+
+const Header: QuartzComponent = (props: QuartzComponentProps) => {
+  return (
+    <>
+      {props.children.length > 0 && <header>{props.children}</header>}
+      <Timeline {...props} />
+    </>
+  )
 }
 
 Header.css = `

@@ -1,0 +1,11 @@
+{
+  "calendar": {
+    "start": "0001-01-01",
+    "end": "7460-12-31"
+  },
+  "initialWindow": {
+    "start": "7452-09-01",
+    "end": "7452-09-30"
+  },
+  "maxOverlapForRed": 5
+}

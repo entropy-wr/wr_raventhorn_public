@@ -37,6 +37,13 @@ $linkColor: #61afef;
   }
 }
 
+// Timeline feature is still in development: hide the launcher banner until
+// it is ready for release. The component and its data pipeline stay intact,
+// so re-enabling only requires removing this rule.
+.timeline-launcher {
+  display: none !important;
+}
+
 body a.internal-link {
   background-color: transparent !important;
   color: $linkColor;

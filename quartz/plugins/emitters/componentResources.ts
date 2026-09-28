@@ -13,6 +13,10 @@ import { BuildCtx } from "../../util/ctx"
 import { QuartzComponent } from "../../components/types"
 import { normalizeResource } from "../../util/resources"
 import { componentRegistry } from "../../components/registry"
+import TimelineConstructor from "../../components/Timeline"
+import timelineStyle from "../../components/styles/timeline.scss"
+// @ts-ignore - inline script is converted to a browser string by the Quartz build.
+import timelineScript from "../../components/scripts/timeline.inline"
 import {
   googleFontHref,
   googleFontSubsetHref,
@@ -48,6 +52,9 @@ function getComponentResources(ctx: BuildCtx): ComponentResources {
     allComponents.add(component)
   }
 
+  // Timeline is rendered by the core Header frame rather than a layout entry.
+  allComponents.add(TimelineConstructor())
+
   const componentResources = {
     css: new Set<string>(),
     beforeDOMLoaded: new Set<string>(),
@@ -60,6 +67,9 @@ function getComponentResources(ctx: BuildCtx): ComponentResources {
     for (const b of normalizeResource(beforeDOMLoaded)) componentResources.beforeDOMLoaded.add(b)
     for (const a of normalizeResource(afterDOMLoaded)) componentResources.afterDOMLoaded.add(a)
   }
+
+  componentResources.css.add(timelineStyle)
+  componentResources.afterDOMLoaded.add(timelineScript)
 
   return {
     css: [...componentResources.css],
